@@ -1,0 +1,33 @@
+/*
+Change the accent color of the default light theme. (Here to orange)
+To pick another color, visit a hex color picker (i.e. https://www.w3schools.com/colors/colors_picker.asp) and choose a color that fits you.
+*/
+
+.theme-light {
+  --text-accent: #ee8a5c;
+  --text-accent-hover: #e2642a;
+  --text-normal: #2e3338;
+  --text-faint: #999999;
+  --interactive-accent: #ee8a5c;
+  --interactive-accent-rgb: 238, 138, 92;
+  --interactive-accent-hover: #e2642a;
+  --text-selection: #ffede0; /* Selection Background Color*/
+}
+
+/* Recoloring checkboxes is a bit tricky. Instead of defining the final color you want, you need to rotate the default color. 
+Best is if you use the Dev Console in Obsidian (CTRL SHIFT I), inspect a checkbox and play around with the values. 
+
+For quick reference, here are some colors:
+
+orange    hue-rotate(157deg) brightness(1.5)
+Red       hue-rotate(138deg)
+pink      hue-rotate(89deg)
+violett   (default of obsidian, remove this rule)
+aqua      hue-rotate(347deg) brightness(1.5)
+blue      hue-rotate(1deg)
+turquoise hue-rotate(319deg) brightness(1.3)
+green     hue-rotate(270deg)
+*/
+.task-list-item-checkbox {
+  filter: hue-rotate(157deg) brightness(1.5);
+}
