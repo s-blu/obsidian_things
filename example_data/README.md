@@ -2,13 +2,24 @@
 
 **⚠ ATTENTION! Super early state of the script, very basic. Better usability and more test data generation (placeholder types & iterating several templates) is in the works**
 
-This script helps you to generate Daily like notes for testing purposes. Edit `template_daily_1.md` to your liking. To generate some random test data, you can use following syntax:
+This script helps you to generate Daily like notes for testing purposes. 
+
+## Usage
+
+**ATTENTION** Running the script will **overwrite** already existing files with the same name in the output path! **Never use in your real vault - always backup!**
+
+
+Edit `template_daily_1.md` to your liking. To generate some random test data, you can use following syntax:
 
 `%typeOfData;min;max;values%`
 
 ⚠ ATTENTION! You currently need to keep this format. A placeholder needs to consists of three `;`. You can leave properties empty; see examples below.
 
 ATTENTION! "values" is not implemented yet.
+
+See the documentation below for more details.
+
+To run the script, download this repository, navigate into `example-data` and run `GenerateExampleData.py` on your command line. This will create a folder `example-data/dailys` containing 20  `.md` files containing the template as well as randomized values for the placeholders. You can edit count and output path of the files at the top of the script.
 
 ### typeOfData
 

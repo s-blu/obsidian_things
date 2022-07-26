@@ -43,7 +43,7 @@ def replacePlaceholders(filecontent, filename):
             if (len(placeholder) != 4):
                 logging.warning(
                     f' Could not split up placeholder "{plh}" into type, min, max, values. Make sure it has the syntax "type;min;max;values" even if one of these is empty!')
-            else: 
+            else:
                 plhtype = placeholder[0]
                 plhmin = placeholder[1]
                 plhmax = placeholder[2]
@@ -52,8 +52,10 @@ def replacePlaceholders(filecontent, filename):
                     replacement = random.randrange(
                         int(plhmin) if plhmin else 0, int(plhmax) if plhmax else 5, 1)
                 elif (plhtype == 'time'):
-                    plhmin = convertTimeToTimestamp(plhmin if plhmin else "08:00")
-                    plhmax = convertTimeToTimestamp(plhmax if plhmax else "22:00")
+                    plhmin = convertTimeToTimestamp(
+                        plhmin if plhmin else "08:00")
+                    plhmax = convertTimeToTimestamp(
+                        plhmax if plhmax else "22:00")
 
                     replacement = datetime.fromtimestamp(
                         random.randrange(round(plhmin), round(plhmax))).strftime("%H:%M")
@@ -73,9 +75,9 @@ def convertTimeToTimestamp(timestr):
     return dttime.timestamp()
 
 
-for i in range(1, 10):
+for i in range(1, 20):
     # TODO start at first of january and be able to just add like 55 days and get a decent date out of this
-    x = datetime(2018, 6, i)
+    somedate = datetime(2022, 6, i)
     # TODO iterate through 3-4 different templates
-    createNewExampleDaily(x.strftime(
+    createNewExampleDaily(somedate.strftime(
         daily_filename_syntax), 'template_daily_1.md')
