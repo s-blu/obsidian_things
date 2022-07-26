@@ -4,7 +4,7 @@
 
 import logging
 from pathlib import Path
-from datetime import time, datetime
+import datetime
 import re
 import random
 
@@ -58,17 +58,17 @@ def replacePlaceholders(filecontent, filename):
                 plhmax = convertTimeToTimestamp(
                     plhmax if plhmax else "22:00")
 
-                replacement = datetime.fromtimestamp(
+                replacement = datetime.datetime.fromtimestamp(
                     random.randrange(round(plhmin), round(plhmax))).strftime("%H:%M")
             elif (plhtype == 'date'):
                 plhmin = filename if plhmin == "filename" else plhmin
                 plhmax = filename if plhmax == "filename" else plhmax
-                plhmin = datetime.fromisoformat(
+                plhmin = datetime.datetime.fromisoformat(
                     plhmin if plhmin else "2022-02-02").timestamp()
-                plhmax = datetime.fromisoformat(
+                plhmax = datetime.datetime.fromisoformat(
                     plhmax if plhmax else "2022-12-12").timestamp()
 
-                replacement = datetime.fromtimestamp(
+                replacement = datetime.datetime.fromtimestamp(
                     random.randrange(round(plhmin), round(plhmax))).strftime("%G-%m-%d")
         filecontent = re.sub(placeholderRegex, str(
             replacement), filecontent, 1)
@@ -78,14 +78,14 @@ def replacePlaceholders(filecontent, filename):
 
 def convertTimeToTimestamp(timestr):
     timestr = timestr.split(":")
-    dttime = datetime.now()
+    dttime = datetime.datetime.now()
     dttime = dttime.replace(hour=int(timestr[0]), minute=int(timestr[1]))
     return dttime.timestamp()
 
 
-for i in range(1, 20):
-    # TODO start at first of january and be able to just add like 55 days and get a decent date out of this
-    somedate = datetime(2022, 6, i)
+for i in range(1, 75):
+    dailydate = datetime.datetime(2022, 1, 1) + datetime.timedelta(days=i)
+
     # TODO iterate through 3-4 different templates
-    createNewExampleDaily(somedate.strftime(
+    createNewExampleDaily(dailydate.strftime(
         daily_filename_syntax), 'template_daily_1.md')
