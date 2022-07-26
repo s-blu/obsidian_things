@@ -11,13 +11,9 @@ This script helps you to generate Daily like notes for testing purposes.
 
 Edit `template_daily_1.md` to your liking. To generate some random test data, you can use following syntax:
 
-`%typeOfData;min;max;values%`
+`%typeOfData;[min;max][;values]%`
 
-⚠ ATTENTION! You currently need to keep this format. A placeholder needs to consists of three `;`. You can leave properties empty; see examples below.
-
-ATTENTION! "values" is not implemented yet.
-
-See the documentation below for more details.
+ℹ Hint: The concrete syntax is dependent on your typeOfData. See below for more details.
 
 To run the script, download this repository, navigate into `example-data` and run `GenerateExampleData.py` on your command line. This will create a folder `example-data/dailys` containing 20  `.md` files containing the template as well as randomized values for the placeholders. You can edit count and output path of the files at the top of the script.
 
@@ -25,17 +21,11 @@ To run the script, download this repository, navigate into `example-data` and ru
 
 Currently available are:
 
-- **number**: Outputs a number between min and max (inclusive). `min` defaults to 0, `min` to 5
-- **time**: Outputs a timestamp of format `HH:MM` between min and max (inclusive). `min` defaults to 08:00, `max` to 22:00
-- **date**: to be implemented
-- **boolean**: to be implemented
-
-### min and max
-Specifies optional minimal and maximum values for the type of data. See `typeOfData`
-
-### values
-
-**To be implemented**. Lets you specify a set of possible values of the field from which one will be randomly chosen. Setting values means `min/max` will be ignored.
+- **filename**: Outputs the filename, in case of the daily notes thats `YYYY-MM-DD`. Syntax: `%filename%`
+- **number**: Outputs a number between min and max (inclusive). `min` defaults to 0, `min` to 5. Syntax: `%number;min;max%`
+- **time**: Outputs a timestamp of format `HH:MM` between min and max (inclusive). `min` defaults to 08:00, `max` to 22:00. Syntax: `%time;min;max%`
+- **date**: Outputs a date of format `YYYY-MM-DD` between min and max (inclusive). `min` defaults to 2022-02-02, `max` to 2022-12-12. Syntax: `%date;min;max%`
+- **text**: Outputs one of the given values. Syntax: `%text;value1|value2|value3%` Values are seperated by a | and therefore cannot contain a | or a ;
 
 ## Examples
 
@@ -43,33 +33,67 @@ Specifies optional minimal and maximum values for the type of data. See `typeOfD
 
 Outputs a value between (inclusive) 0 and 5
 ```
-mood:: %number;;;%
+mood:: %number;;%
 ```
 
 Outputs a value between (inclusive) 0 and 3
 ```
-mood:: %number;;3;%
+mood:: %number;;3%
 ```
 
 Outputs a value between (inclusive) 2 and 7
 ```
-steps:: %number;35;11183;%
+steps:: %number;35;11183%
 ```
 
 **time**
 
 Outputs a time stamp of format `HH:MM` between (inclusive) 08:00 and 22:00
 ```
-meditation:: %time;;;%
+meditation:: %time;;%
 ```
 
 Outputs a time stamp of format `HH:MM` between (inclusive) 15:00 and 22:00
 ```
-dinner:: %time;15:00;;%
+dinner:: %time;15:00;%
 ```
 
 
 Outputs a time stamp of format `HH:MM` between (inclusive) 06:00 and 08:23
 ```
-wake-up:: %time;06:00;08:23;%
+wake-up:: %time;06:00;08:23%
+```
+
+**date**
+Outputs a date of format `YYYY-MM-DD` between (inclusive) 2022-02-02 and 2022-12-12
+```
+appointment:: %date;;%
+```
+
+Outputs a date of format `YYYY-MM-DD` between (inclusive) the filename of the file (that needs to be in format `YYYY-MM-DD`) and 2022-12-12
+```
+appointment:: %date;filename;%
+```
+
+Outputs a date of format `YYYY-MM-DD` between (inclusive) 2022-01-01 and 2022-02-02
+```
+appointment:: %date;2022-01-01;2022-02-02%
+```
+
+
+**text**
+
+Outputs either "yes" or "no"
+```
+raining:: %text;yes|no%
+```
+
+Outputs either x, o, z, t, rgb or l
+```
+character:: %text;x|o|z|t|rgb|l%
+```
+
+Outputs either "true" or an empty string (nothing)
+```
+raining:: %text;true|%
 ```

@@ -35,33 +35,41 @@ def replacePlaceholders(filecontent, filename):
 
     for i, plh in enumerate(placeholders):
         replacement = ""
-        plh = plh.replace("%", "")
-        if (plh == "filename"):
+        plh = plh.replace("%", "").split(";")
+        plhtype = plh[0]
+        if (plhtype == "filename"):
             replacement = filename
+        elif (plhtype == "text"):
+            values = plh[1].split("|")
+            pick = random.randrange(0, len(values), 1)
+            replacement = values[pick]
         else:
-            placeholder = plh.split(";")
-            if (len(placeholder) != 4):
+            if (len(plh) != 3):
                 logging.warning(
-                    f' Could not split up placeholder "{plh}" into type, min, max, values. Make sure it has the syntax "type;min;max;values" even if one of these is empty!')
-            else:
-                plhtype = placeholder[0]
-                plhmin = placeholder[1]
-                plhmax = placeholder[2]
-                plhvalues = placeholder[3]
-                if (plhtype == 'number'):
-                    replacement = random.randrange(
-                        int(plhmin) if plhmin else 0, int(plhmax) if plhmax else 5, 1)
-                elif (plhtype == 'time'):
-                    plhmin = convertTimeToTimestamp(
-                        plhmin if plhmin else "08:00")
-                    plhmax = convertTimeToTimestamp(
-                        plhmax if plhmax else "22:00")
+                    f' Could not split up placeholder "{plh}" into type, min, max. Make sure it has the syntax "type;min;max" even if one of these is empty!')
+            plhmin = plh[1]
+            plhmax = plh[2]
+            if (plhtype == 'number'):
+                replacement = random.randrange(
+                    int(plhmin) if plhmin else 0, int(plhmax) if plhmax else 5, 1)
+            elif (plhtype == 'time'):
+                plhmin = convertTimeToTimestamp(
+                    plhmin if plhmin else "08:00")
+                plhmax = convertTimeToTimestamp(
+                    plhmax if plhmax else "22:00")
 
-                    replacement = datetime.fromtimestamp(
-                        random.randrange(round(plhmin), round(plhmax))).strftime("%H:%M")
-            # TODO boolean
-            # TODO date
-            # TODO values
+                replacement = datetime.fromtimestamp(
+                    random.randrange(round(plhmin), round(plhmax))).strftime("%H:%M")
+            elif (plhtype == 'date'):
+                plhmin = filename if plhmin == "filename" else plhmin
+                plhmax = filename if plhmax == "filename" else plhmax
+                plhmin = datetime.fromisoformat(
+                    plhmin if plhmin else "2022-02-02").timestamp()
+                plhmax = datetime.fromisoformat(
+                    plhmax if plhmax else "2022-12-12").timestamp()
+
+                replacement = datetime.fromtimestamp(
+                    random.randrange(round(plhmin), round(plhmax))).strftime("%G-%m-%d")
         filecontent = re.sub(placeholderRegex, str(
             replacement), filecontent, 1)
 
