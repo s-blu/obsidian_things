@@ -4,7 +4,7 @@ wellbeing:
   mood: %number;;%
   mood-notes: %text;discomfort|relaxed|sad|happy|neutral|euphoric|heartbroken|happy|sad|neutral|neutral|neutral|%
   health: %number;;%
-  health-notes: %text;good!|tired|exhausted|discomfort|rela%
+  health-notes: %text;good!|tired|exhausted|okay|ugly headaches left side|slight headaches right side%
   pain: %number;;3%
   pain-type: %text;back|back,legs|back,shoulders,legs|head|head,shoulders|back,head,shoulders||legs%
 ---

@@ -11,12 +11,13 @@ import random
 folderpath_root = "example_data"
 # TODO concatinate with the file somnething package to not cause OS dependencies
 folderpath_dailys = folderpath_root + "/dailys"
-totalCountOfDailies = 75
+totalCountOfDailies = 123
+templates = ['templates/template_daily_1.md','templates/template_daily_2.md']
 
 # see https://docs.python.org/3/library/datetime.html#strftime-and-strptime-behavior for syntax
 daily_filename_syntax = "%G-%m-%d"
 
-def createNewExampleDaily(filename, templatefile):
+def createNewExampleFile(filename, templatefile):
     Path(folderpath_dailys).mkdir(parents=True, exist_ok=True)
 
     example = open(templatefile, encoding='utf-8')
@@ -85,8 +86,9 @@ def convertTimeToTimestamp(timestr):
 
 
 for i in range(1, totalCountOfDailies):
+    templateNo = random.randrange(0, len(templates))
     dailydate = datetime.datetime(2022, 1, 1) + datetime.timedelta(days=i)
 
     # TODO iterate through 3-4 different templates
-    createNewExampleDaily(dailydate.strftime(
-        daily_filename_syntax), 'template_daily_1.md')
+    createNewExampleFile(dailydate.strftime(
+        daily_filename_syntax), templates[templateNo])
