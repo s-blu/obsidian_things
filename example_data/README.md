@@ -6,7 +6,7 @@ This script helps you to generate Daily like notes for testing purposes.
 
 ## Usage
 
-**ATTENTION** Running the script will **overwrite** already existing files with the same name in the output path! **Never use in your real vault - always backup!**
+**ATTENTION** Running the script will **overwrite** already existing files with the same name in the output path! **⚠ Never use in your real vault! ⚠**
 
 
 Edit `template_daily_1.md` to your liking. To generate some random test data, you can use following syntax:
@@ -15,7 +15,7 @@ Edit `template_daily_1.md` to your liking. To generate some random test data, yo
 
 ℹ Hint: The concrete syntax is dependent on your typeOfData. See below for more details.
 
-To run the script, download this repository, navigate into `example-data` and run `GenerateExampleData.py` on your command line. This will create a folder `example-data/dailys` containing 20  `.md` files containing the template as well as randomized values for the placeholders. You can edit count and output path of the files at the top of the script.
+To run the script, download this repository, navigate into `example-data` and run `GenerateExampleData.py` on your command line. This will create a folder `example-data/dailys` with  `.md` files containing the template as well as randomized values for the placeholders. You can edit count and output path of the files at the top of the script.
 
 ### typeOfData
 

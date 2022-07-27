@@ -2,8 +2,11 @@
 day: %filename%
 wellbeing:
   mood: %number;;%
-  pain:: %number;;3%
-  sorrow:: %number;;%
+  mood-notes: %text;discomfort|relaxed|sad|happy|neutral|euphoric|heartbroken|happy|sad|neutral|neutral|neutral|%
+  health: %number;;%
+  health-notes: %text;good!|tired|exhausted|discomfort|rela%
+  pain: %number;;3%
+  pain-type: %text;back|back,legs|back,shoulders,legs|head|head,shoulders|back,head,shoulders||legs%
 ---
 
 # Daily Note %filename%
@@ -18,8 +21,11 @@ wellbeing:
 
 Today I ate [icecream:: %number;0;3%] and [buns:: %number;;%].
 
+#### Appointments
 My next appointment with [person:: %text;Lisa|Paul|AB1908|Christa|Fernando|Elias%] is on [appointment:: %date;filename;%].
 Also I have an appointment at [appointment:: %date;filename;% %time;;%] with [person:: %text;Bob|Alice|Karl|Jonathan|Barbara%]
+
+#### Metadata
 
 **Daily Routine**
 wake-up:: %time;06:00;08:23%
@@ -29,6 +35,6 @@ dinner:: %time;15:00;%
 go-to-sleep:: %time;21:45;23:55%
 
 **Workout**
-training:: %time;;%
+training:: %text;15m|1h 5m|23m|1h 27m|36m|%
 situps:: %number;0;25%
 steps:: %number;35;11183%

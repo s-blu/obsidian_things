@@ -11,10 +11,10 @@ import random
 folderpath_root = "example_data"
 # TODO concatinate with the file somnething package to not cause OS dependencies
 folderpath_dailys = folderpath_root + "/dailys"
+totalCountOfDailies = 75
 
 # see https://docs.python.org/3/library/datetime.html#strftime-and-strptime-behavior for syntax
 daily_filename_syntax = "%G-%m-%d"
-
 
 def createNewExampleDaily(filename, templatefile):
     Path(folderpath_dailys).mkdir(parents=True, exist_ok=True)
@@ -40,6 +40,7 @@ def replacePlaceholders(filecontent, filename):
         if (plhtype == "filename"):
             replacement = filename
         elif (plhtype == "text"):
+            # TODO paste warning if values cannot be found 
             values = plh[1].split("|")
             pick = random.randrange(0, len(values), 1)
             replacement = values[pick]
@@ -83,7 +84,7 @@ def convertTimeToTimestamp(timestr):
     return dttime.timestamp()
 
 
-for i in range(1, 75):
+for i in range(1, totalCountOfDailies):
     dailydate = datetime.datetime(2022, 1, 1) + datetime.timedelta(days=i)
 
     # TODO iterate through 3-4 different templates
