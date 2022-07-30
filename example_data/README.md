@@ -1,6 +1,6 @@
 # Generate Example/Mock Data for Dataview
 
-**⚠ ATTENTION! Super early state of the script, very basic. Better usability and more test data generation (placeholder types & iterating several templates) is in the works**
+**⚠ ATTENTION! This script overwrites files in the given output path - never ever use in your real vault!**
 
 This script helps you to generate Daily like notes for testing purposes. 
 
@@ -96,3 +96,72 @@ Outputs either "true" or an empty string (nothing)
 ```
 raining:: %text;true|%
 ```
+
+## Example template
+
+A template could look like this:
+
+```
+---
+day: %filename%
+wellbeing:
+  mood: %number;;%
+  health: %number;3;%
+  notes: %text;discomfort|relaxed|sad|happy|neutral|euphoric|heartbroken|happy|sad|neutral|neutral|neutral|%
+---
+#daily
+
+# Daily Note %filename%
+
+- [ ] Task 1 of %filename%
+- [x] Completed Task of %filename%
+- [%text;-|x|x|x|x| |>|o%] Task with state (maybe)
+
+#### Appointments
+My next appointment with [person:: %text;Lisa|Paul|Christa|Fernando|Elias%] is on [appointment:: %date;filename;%].
+Also I have an appointment at [appointment:: %date;filename;% %time;;%] with [person:: %text;Bob|Alice|Karl|Jonathan|Barbara%]
+
+#### Metadata
+
+wake-up:: %time;06:00;08:23%
+praying:: %text;yes|%
+go-to-sleep:: %time;21:45;23:55%
+
+training:: %text;15m|1h 5m|23m|1h 27m|36m|%
+situps:: %number;0;25%
+steps:: %number;35;11183%
+```
+
+This would result in - for example - this output:
+
+```
+---
+day: 2022-01-09
+wellbeing:
+  mood: 3
+  health: 3
+  notes: 
+---
+#daily
+
+# Daily Note 2022-01-09
+
+- [ ] Task 1 of 2022-01-09
+- [x] Completed Task of 2022-01-09
+- [x] Task with state (maybe)
+
+#### Appointments
+My next appointment with [person:: Christa] is on [appointment:: 2022-04-19].
+Also I have an appointment at [appointment:: 2022-08-27 09:47] with [person:: Barbara]
+
+#### Metadata
+
+wake-up:: 06:29
+praying:: yes
+go-to-sleep:: 22:31
+
+training:: 36m
+situps:: 6
+steps:: 7347
+```
+
