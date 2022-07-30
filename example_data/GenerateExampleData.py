@@ -1,21 +1,19 @@
-# TODO parse template and replace %var% placeholders with given values
-# TODO randomize placeholder values in a given range
-# TODO create 2-3 more template files
-
 import logging
 from pathlib import Path
 import datetime
 import re
 import random
+import os
 
 folderpath_root = "example_data"
-# TODO concatinate with the file somnething package to not cause OS dependencies
-folderpath_dailys = folderpath_root + "/dailys"
-totalCountOfDailies = 123
-templates = ['templates/template_daily_1.md','templates/template_daily_2.md']
+folderpath_dailys = os.path.join(folderpath_root, "dailys")
+totalCountOfDailies = 35
+templates = ['templates/dailys/template_daily_1.md',
+             'templates/dailys/template_daily_2.md', 'templates/dailys/template_daily_3.md']
 
 # see https://docs.python.org/3/library/datetime.html#strftime-and-strptime-behavior for syntax
 daily_filename_syntax = "%G-%m-%d"
+
 
 def createNewExampleFile(filename, templatefile):
     Path(folderpath_dailys).mkdir(parents=True, exist_ok=True)
@@ -24,8 +22,7 @@ def createNewExampleFile(filename, templatefile):
     content = example.read()
     content = replacePlaceholders(content, filename)
 
-    # TODO concatinate with the file somnething package to not cause OS dependencies
-    f = open(folderpath_dailys + "/" + filename + ".md", 'w+')
+    f = open(os.path.join(folderpath_dailys, filename + ".md"), 'w+')
     f.write(content)
     f.close()
 
@@ -41,7 +38,7 @@ def replacePlaceholders(filecontent, filename):
         if (plhtype == "filename"):
             replacement = filename
         elif (plhtype == "text"):
-            # TODO paste warning if values cannot be found 
+            # TODO paste warning if values cannot be found
             values = plh[1].split("|")
             pick = random.randrange(0, len(values), 1)
             replacement = values[pick]
@@ -87,8 +84,8 @@ def convertTimeToTimestamp(timestr):
 
 for i in range(1, totalCountOfDailies):
     templateNo = random.randrange(0, len(templates))
-    dailydate = datetime.datetime(2022, 1, 1) + datetime.timedelta(days=i)
+    # starting on the third to get full weeks
+    dailydate = datetime.datetime(2022, 1, 3) + datetime.timedelta(days=i)
 
-    # TODO iterate through 3-4 different templates
     createNewExampleFile(dailydate.strftime(
         daily_filename_syntax), templates[templateNo])
