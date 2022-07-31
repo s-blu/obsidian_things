@@ -14,7 +14,8 @@ Edit the files under `templates/` to your liking. If you want more templates, cr
 
 ℹ Hint: The concrete syntax is dependent on your typeOfData. See below for more details.
 
-To run the script, download this repository, navigate into `example-data` and run `GenerateExampleData.py` on your command line. This will create a folder `example-data/dailys` with  `.md` files containing the template as well as randomized values for the placeholders. You can edit count and output path of the files at the top of the script.
+To run the script, download this repository, navigate into `example-data` and run `GenerateExampleData.py` on your command line. This will create a folder `example-data` with `.md` files containing the template as well as randomized values for the placeholders. You can edit count and output path of the files at the top of the script. 
+If you only want to generate `resources` or `dailys`, remove the appropiate function call at the bottom of the script. If you want to generate multiple `resources`, add function calls as needed and pass in the data (count, filenamesyntax, templates and paths) directly to the function.
 
 ### typeOfData
 
@@ -40,7 +41,7 @@ Outputs a value between (inclusive) 0 and 3
 mood:: %number;;3%
 ```
 
-Outputs a value between (inclusive) 2 and 7
+Outputs a value between (inclusive) 35 and 11183
 ```
 steps:: %number;35;11183%
 ```
@@ -92,7 +93,7 @@ Outputs either x, o, z, t, rgb or l
 character:: %text;x|o|z|t|rgb|l%
 ```
 
-Outputs either "true" or an empty string (nothing)
+Outputs either "true" or nothing (empty string)
 ```
 raining:: %text;true|%
 ```
@@ -164,4 +165,3 @@ training:: 36m
 situps:: 6
 steps:: 7347
 ```
-

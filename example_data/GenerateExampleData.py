@@ -6,23 +6,31 @@ import random
 import os
 
 folderpath_root = "example_data"
+
+# resources
+folderpath_resources = os.path.join(folderpath_root, "books")
+totalCountOfResources = 7
+resource_templates = ['templates/books/1.md', 'templates/books/2.md', ]
+resource_filename_syntax = "books_"
+
+
+# dailies
 folderpath_dailys = os.path.join(folderpath_root, "dailys")
 totalCountOfDailies = 35
-templates = ['templates/dailys/template_daily_1.md',
-             'templates/dailys/template_daily_2.md', 'templates/dailys/template_daily_3.md']
-
+daily_templates = ['templates/dailys/template_daily_1.md',
+                   'templates/dailys/template_daily_2.md', 'templates/dailys/template_daily_3.md']
 # see https://docs.python.org/3/library/datetime.html#strftime-and-strptime-behavior for syntax
 daily_filename_syntax = "%G-%m-%d"
 
 
-def createNewExampleFile(filename, templatefile):
-    Path(folderpath_dailys).mkdir(parents=True, exist_ok=True)
+def createNewExampleFile(filename, templatefile, folderpath):
+    Path(folderpath).mkdir(parents=True, exist_ok=True)
 
     example = open(templatefile, encoding='utf-8')
     content = example.read()
     content = replacePlaceholders(content, filename)
 
-    f = open(os.path.join(folderpath_dailys, filename + ".md"), 'w+')
+    f = open(os.path.join(folderpath, filename + ".md"), 'w+')
     f.write(content)
     f.close()
 
@@ -82,10 +90,22 @@ def convertTimeToTimestamp(timestr):
     return dttime.timestamp()
 
 
-for i in range(1, totalCountOfDailies):
-    templateNo = random.randrange(0, len(templates))
-    # starting on the third to get full weeks
-    dailydate = datetime.datetime(2022, 1, 3) + datetime.timedelta(days=i)
+def createExampleDailies(count=totalCountOfDailies, filennameSyntax=daily_filename_syntax):
+    for i in range(1, count):
+        templateNo = random.randrange(0, len(daily_templates))
+        # starting on the third to get full weeks
+        dailydate = datetime.datetime(2022, 1, 3) + datetime.timedelta(days=i)
 
-    createNewExampleFile(dailydate.strftime(
-        daily_filename_syntax), templates[templateNo])
+        createNewExampleFile(dailydate.strftime(
+            filennameSyntax), daily_templates[templateNo], folderpath_dailys)
+
+
+def createExampleResources(count=totalCountOfResources, filennameSyntax=resource_filename_syntax, templates=resource_templates, path=folderpath_resources):
+    for i in range(1, count):
+        templateNo = random.randrange(0, len(templates))
+        createNewExampleFile(filennameSyntax + str(i),
+                             templates[templateNo], path)
+
+
+createExampleDailies()
+createExampleResources()
