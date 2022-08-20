@@ -1,9 +1,11 @@
+from gettext import find
 import logging
 from pathlib import Path
 import datetime
 import re
 import random
 import os
+import json
 
 folderpath_root = "example_data"
 
@@ -23,21 +25,27 @@ daily_templates = ['templates/dailys/template_daily_1.md',
 daily_filename_syntax = "%G-%m-%d"
 
 
-def createNewExampleFile(filename, templatefile, folderpath):
+def createNewExampleFile(filename, templatefile, folderpath, data):
     Path(folderpath).mkdir(parents=True, exist_ok=True)
 
     example = open(templatefile, encoding='utf-8')
     content = example.read()
-    content = replacePlaceholders(content, filename)
+    content = replacePlaceholders(content, filename, data)
 
     f = open(os.path.join(folderpath, filename + ".md"), 'w+')
     f.write(content)
     f.close()
 
 
-def replacePlaceholders(filecontent, filename):
+def replacePlaceholders(filecontent, filename, data):
     placeholderRegex = r'(%.[^%]+%)'
     placeholders = re.findall(placeholderRegex, filecontent)
+
+    datefilename = filename
+    try:
+        datetime.datetime.fromisoformat(datefilename)
+    except ValueError:
+        datefilename = datetime.datetime.now().strftime(daily_filename_syntax)
 
     for i, plh in enumerate(placeholders):
         replacement = ""
@@ -50,6 +58,9 @@ def replacePlaceholders(filecontent, filename):
             values = plh[1].split("|")
             pick = random.randrange(0, len(values), 1)
             replacement = values[pick]
+        elif (plhtype == "data"):
+            if (data):
+                replacement = data[plh[1]]
         else:
             if (len(plh) != 3):
                 logging.warning(
@@ -68,8 +79,8 @@ def replacePlaceholders(filecontent, filename):
                 replacement = datetime.datetime.fromtimestamp(
                     random.randrange(round(plhmin), round(plhmax))).strftime("%H:%M")
             elif (plhtype == 'date'):
-                plhmin = filename if plhmin == "filename" else plhmin
-                plhmax = filename if plhmax == "filename" else plhmax
+                plhmin = datefilename if plhmin == "filename" else plhmin
+                plhmax = datefilename if plhmax == "filename" else plhmax
                 plhmin = datetime.datetime.fromisoformat(
                     plhmin if plhmin else "2022-02-02").timestamp()
                 plhmax = datetime.datetime.fromisoformat(
@@ -103,9 +114,39 @@ def createExampleDailies(count=totalCountOfDailies, filennameSyntax=daily_filena
 def createExampleResources(count=totalCountOfResources, filennameSyntax=resource_filename_syntax, templates=resource_templates, path=folderpath_resources):
     for i in range(1, count):
         templateNo = random.randrange(0, len(templates))
-        createNewExampleFile(filennameSyntax + str(i),
-                             templates[templateNo], path)
+        if isinstance(filennameSyntax, list):
+            filename = filennameSyntax[i]
+        else:
+            filename = filennameSyntax + str(i)
+
+        createNewExampleFile(filename, templates[templateNo], path)
 
 
-createExampleDailies()
-createExampleResources()
+def createExampleResourcesFromDataset(filenames, templates, path, dataFn):
+    for i in range(1, len(filenames)):
+        templateNo = random.randrange(0, len(templates))
+        data = dataFn(filenames[i])
+
+        createNewExampleFile(filenames[i], templates[templateNo], path, data)
+
+
+def findGameData(gameName):
+    dataset = open("templates/data/games.json", encoding='utf-8')
+    content = json.loads(dataset.read())
+    data = None
+    for game in content:
+        if game["name"] == gameName:
+            data = game
+            break
+
+    return data
+
+
+# createExampleDailies()
+# createExampleResources()
+createExampleResourcesFromDataset(
+    ["V Rising", "Valheim", "Stardew Valley", "Dota 2", "New World",
+        "Team Fortress 2", "Warframe", "Terraria", "ELDEN RING", "Among Us", ""],
+    ['templates/games/1.md'],
+    os.path.join(folderpath_root, "games"),
+    findGameData)
