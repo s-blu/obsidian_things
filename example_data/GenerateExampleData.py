@@ -25,7 +25,7 @@ daily_templates = ['templates/dailys/template_daily_1.md',
 daily_filename_syntax = "%G-%m-%d"
 
 
-def createNewExampleFile(filename, templatefile, folderpath, data):
+def createNewExampleFile(filename, templatefile, folderpath, data=None):
     Path(folderpath).mkdir(parents=True, exist_ok=True)
 
     example = open(templatefile, encoding='utf-8')
@@ -59,8 +59,11 @@ def replacePlaceholders(filecontent, filename, data):
             pick = random.randrange(0, len(values), 1)
             replacement = values[pick]
         elif (plhtype == "data"):
-            if (data):
+            try:
                 replacement = data[plh[1]]
+            except:
+                logging.warning(
+                    f'Could not replace data placeholder "{plh[1]}" with dataset {data}')
         else:
             if (len(plh) != 3):
                 logging.warning(
@@ -112,6 +115,9 @@ def createExampleDailies(count=totalCountOfDailies, filennameSyntax=daily_filena
 
 
 def createExampleResources(count=totalCountOfResources, filennameSyntax=resource_filename_syntax, templates=resource_templates, path=folderpath_resources):
+    if isinstance(filennameSyntax, list):
+        count = len(filennameSyntax)
+
     for i in range(1, count):
         templateNo = random.randrange(0, len(templates))
         if isinstance(filennameSyntax, list):
@@ -123,14 +129,21 @@ def createExampleResources(count=totalCountOfResources, filennameSyntax=resource
 
 
 def createExampleResourcesFromDataset(filenames, templates, path, dataFn):
-    for i in range(1, len(filenames)):
+    for i in range(0, len(filenames)):
         templateNo = random.randrange(0, len(templates))
-        data = dataFn(filenames[i])
+        data = dataFn(filenames[i], i)
 
         createNewExampleFile(filenames[i], templates[templateNo], path, data)
 
 
-def findGameData(gameName):
+
+# === CALLS OF DATA GENERATING FUNCTIONS BELOW ==
+# ￬￬￬ Adjust this to your needs ￬￬￬
+
+createExampleDailies(7)
+createExampleResources()
+
+def findGameData(gameName, index):
     dataset = open("templates/data/games.json", encoding='utf-8')
     content = json.loads(dataset.read())
     data = None
@@ -141,12 +154,8 @@ def findGameData(gameName):
 
     return data
 
-
-# createExampleDailies()
-# createExampleResources()
 createExampleResourcesFromDataset(
-    ["V Rising", "Valheim", "Stardew Valley", "Dota 2", "New World",
-        "Team Fortress 2", "Warframe", "Terraria", "ELDEN RING", "Among Us", ""],
+    ["Stardew Valley", "New World", "Team Fortress 2"],
     ['templates/games/1.md'],
     os.path.join(folderpath_root, "games"),
     findGameData)

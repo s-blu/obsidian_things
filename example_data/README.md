@@ -166,19 +166,19 @@ If you have a .json file with this content:
     "name": "Stardew Valley",
     "developer": "ConcernedApe",
     "publisher": "ConcernedApe",
-    "genre": "Indie, RPG, Simulation",
+    "genre": "Indie, RPG, Simulation"
   },
   {
     "name": "New World",
     "developer": "Amazon Games",
     "publisher": "Amazon Games",
-    "genre": "Action, Adventure, Massively Multiplayer, RPG",
+    "genre": "Action, Adventure, Massively Multiplayer, RPG"
   },
   {
     "name": "Team Fortress 2",
     "developer": "Valve",
     "publisher": "Valve",
-    "genre": "Action, Free to Play",  
+    "genre": "Action, Free to Play" 
   }
 ]
 ```
