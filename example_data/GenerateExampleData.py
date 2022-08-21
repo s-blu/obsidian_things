@@ -1,4 +1,3 @@
-from gettext import find
 import logging
 from pathlib import Path
 import datetime
@@ -7,6 +6,7 @@ import random
 import os
 import json
 
+logging.getLogger().setLevel(logging.INFO)
 folderpath_root = "example_data"
 
 # resources
@@ -26,6 +26,11 @@ daily_filename_syntax = "%G-%m-%d"
 
 
 def createNewExampleFile(filename, templatefile, folderpath, data=None):
+    startLog = f' Creating example file "{folderpath} → {filename}" from "{templatefile}"'
+    if (data):
+        startLog += ', using a data set'
+    logging.info(startLog)
+
     Path(folderpath).mkdir(parents=True, exist_ok=True)
 
     example = open(templatefile, encoding='utf-8')
@@ -105,7 +110,7 @@ def convertTimeToTimestamp(timestr):
 
 
 def createExampleDailies(count=totalCountOfDailies, filennameSyntax=daily_filename_syntax):
-    for i in range(1, count):
+    for i in range(0, count):
         templateNo = random.randrange(0, len(daily_templates))
         # starting on the third to get full weeks
         dailydate = datetime.datetime(2022, 1, 3) + datetime.timedelta(days=i)
@@ -118,12 +123,12 @@ def createExampleResources(count=totalCountOfResources, filennameSyntax=resource
     if isinstance(filennameSyntax, list):
         count = len(filennameSyntax)
 
-    for i in range(1, count):
+    for i in range(0, count):
         templateNo = random.randrange(0, len(templates))
         if isinstance(filennameSyntax, list):
             filename = filennameSyntax[i]
         else:
-            filename = filennameSyntax + str(i)
+            filename = filennameSyntax + str(i + 1)
 
         createNewExampleFile(filename, templates[templateNo], path)
 
@@ -136,12 +141,11 @@ def createExampleResourcesFromDataset(filenames, templates, path, dataFn):
         createNewExampleFile(filenames[i], templates[templateNo], path, data)
 
 
-
 # === CALLS OF DATA GENERATING FUNCTIONS BELOW ==
 # ￬￬￬ Adjust this to your needs ￬￬￬
-
 createExampleDailies(7)
 createExampleResources()
+
 
 def findGameData(gameName, index):
     dataset = open("templates/data/games.json", encoding='utf-8')
@@ -153,6 +157,7 @@ def findGameData(gameName, index):
             break
 
     return data
+
 
 createExampleResourcesFromDataset(
     ["Stardew Valley", "New World", "Team Fortress 2"],
