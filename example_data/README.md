@@ -210,6 +210,7 @@ createExampleResourcesFromDataset(
 You'll be able to use a template of this sort:
 
 ```
+---
 name: %filename%
 publisher: %data;publisher%
 developer: %data;developer%
